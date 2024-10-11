@@ -1,0 +1,114 @@
+<div class="grid">
+	<div class="col-12">
+        <block-ui>
+            <p-toast></p-toast> 
+            <p-confirmDialog key="confirmDialog" ></p-confirmDialog>
+            <div class="card">
+                <h5>Formule type</h5>
+                <p-table #dt1 [value]="formulePrixList" dataKey="id" [rows]="formulePrixList.length" [loading]="loading" [rowHover]="true" styleClass="p-datatable-gridlines" [paginator]="true" 
+                [globalFilterFields]="['forM_Title', 'forM_Prix']" responsiveLayout="scroll">			
+                <ng-template pTemplate="caption">
+                    <div class="flex justify-content-between flex-column sm:flex-row">
+                        <!--
+                        <button pButton label="Clear" class="p-button-outlined mb-2" icon="pi pi-filter-slash" (click)="clear(dt1)"></button> 
+                        -->
+                        <button *ngIf="formuleTypeItems.length > 0" pButton label="Ajouter une formule de prix" class="p-button-outlined mb-2" icon="pi pi-plus" 
+                            (click)="ajouterFormuleDePrix()"></button> 
+
+                        <span class="p-input-icon-left mb-2">
+                            <i class="pi pi-search"></i>
+                            <input pInputText type="text" #filter (input)="onGlobalFilter(dt1, $event)" placeholder="Recherche" class="w-full"/>
+                        </span>
+                    </div>
+                </ng-template>
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th style="min-width: 12rem">
+                            <div class="flex justify-content-between align-items-center">
+                                Id
+                                <!--
+                                <p-columnFilter type="text" field="payS_Id" display="menu" placeholder="Search by name"></p-columnFilter>
+                                -->
+                            </div>
+                        </th>
+                        <th style="min-width: 12rem">
+                            <div class="flex justify-content-between align-items-center">
+                                Type
+                            </div>
+                        </th>
+                        <th style="min-width: 12rem">
+                            <div class="flex justify-content-between align-items-center">
+                                Prix
+                            </div>
+                        </th>
+                        <th style="min-width: 12rem">
+                            <div class="flex justify-content-between align-items-center">
+                               Actions
+                            </div>
+                        </th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-formulePrix>
+                    <tr>
+                        <td>
+                            {{formulePrix.forM_Id}}
+                        </td>
+                        <td>
+                            {{formulePrix.forM_Title}}
+                        </td>
+                        <td>
+                            {{formulePrix.forM_Prix}}
+                        </td>
+                        <td>
+                            <button title="Modifier formule de peix" pButton pRipple type="button" icon="pi pi-pencil" class="p-button-rounded p-button-info" 
+                             (click)="editer(formulePrix.forM_Id, formulePrix.forM_Prix, formulePrix.forM_Title)"></button>
+                        </td>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="emptymessage">
+                    <tr>
+                        <td colspan="8">Aucune donnée disponible.</td>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="loadingbody">
+                    <tr>
+                        <td colspan="8">Chargement des données. En attente ...</td>
+                    </tr>
+                </ng-template>
+                </p-table>
+            </div>
+        </block-ui>
+	</div>
+</div>
+
+<p-dialog header="Formule de prix" [modal]="true" [(visible)]="afficherDialogFormulePrix" [style]="{ width: '50rem', height:'30rem' }">
+
+    <h5 *ngIf="idFormulePrix === 0" >Ajout formule de prix</h5>
+    <h5 *ngIf="idFormulePrix > 0" >Modification formule de prix</h5>
+    <form [formGroup]="formulePrixForm" >
+        <div class="p-fluid p-formgrid grid">
+
+            <div class="field col-12 md:col-6">
+                <label htmlFor="Prix">Prix</label>
+                <input pInputText id="prix" type="number" formControlName="prix" />
+                <small class="p-error block" *ngIf="formulePrixForm.get('prix')?.invalid && formulePrixForm.get('prix')?.touched">
+                    Prix est obligatoire
+                </small>
+            </div>
+            <div *ngIf="idFormulePrix === 0" class="field col-12 md:col-6">
+                <label htmlFor="formuleType">Formule type</label>
+                <p-dropdown id="formuleType" [options]="formuleTypeItems" optionLabel="title" formControlName="formuleType"></p-dropdown>
+                <small class="p-error block" *ngIf="formulePrixForm.get('formuleType')?.invalid && formulePrixForm.get('formuleType')?.touched">
+                    Formule type est obligatoire
+                </small>
+            </div>
+            <div *ngIf="idFormulePrix > 0" class="field col-12 md:col-6">
+            </div>
+           
+            <div class="flex justify-content-end gap-2">
+                <p-button label="Annuler" severity="secondary" (click)="annulerFormulePrix()" />
+                <p-button label="Valider" (click)="validerFormulePrix()" />
+            </div>
+        </div>
+    </form>
+</p-dialog>

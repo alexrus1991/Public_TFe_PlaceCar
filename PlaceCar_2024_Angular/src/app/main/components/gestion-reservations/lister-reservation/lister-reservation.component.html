@@ -1,0 +1,225 @@
+<div class="grid">
+	<div class="col-12">
+        <block-ui>
+            <p-toast></p-toast> 
+            <p-confirmDialog key="confirmDialog" ></p-confirmDialog>
+            <div class="card">
+                <h5>Réservations</h5>
+                <p-table #dt1 [value]="reservations" dataKey="id" [rows]="reservations.length" [loading]="loading" [rowHover]="true" styleClass="p-datatable-gridlines" [paginator]="true" 
+                    [globalFilterFields]="['reS_DateReservation', 'reS_DateDebut', 'reS_DateFin', 'plA_Etage', 'plA_NumeroPlace',
+                    'parK_Nom', 'adrS_NomRue', 'adrS_Ville', 'status']" responsiveLayout="scroll">		
+                    <ng-template pTemplate="caption">
+                        <div class="flex justify-content-between flex-column sm:flex-row">
+                            <!--
+                            <button pButton label="Clear" class="p-button-outlined mb-2" icon="pi pi-filter-slash" (click)="clear(dt1)"></button> 
+                            -->
+                            <button pButton label="Effectuer une réservation" class="p-button-outlined mb-2" icon="pi pi-plus" 
+                            (click)="router.navigate(['/gestion-reservations/creer-reservation'])"></button> 
+
+                            <span class="p-input-icon-left mb-2">
+                                <i class="pi pi-search"></i>
+                                <input pInputText type="text" #filter (input)="onGlobalFilter(dt1, $event)" placeholder="Recherche" class="w-full"/>
+                            </span>
+                        </div>
+                    </ng-template>
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th>
+                                <div class="flex justify-content-between align-items-center">
+                                    Id
+                                    <!--
+                                    <p-columnFilter type="text" field="payS_Id" display="menu" placeholder="Search by name"></p-columnFilter>
+                                    -->
+                                </div>
+                            </th>
+                            <th>
+                                <div class="flex justify-content-between align-items-center">
+                                    Date réservation
+                                     <!--
+                                    <p-columnFilter type="text" field="payS_Nom" display="menu" placeholder="Search by country"></p-columnFilter>
+                                    -->
+                                </div>
+                            </th>
+                            <th>
+                                <div class="flex justify-content-between align-items-center">
+                                    Date début
+                                     <!--
+                                    <p-columnFilter type="text" field="payS_Nom" display="menu" placeholder="Search by country"></p-columnFilter>
+                                    -->
+                                </div>
+                            </th>
+                            <th>
+                                <div class="flex justify-content-between align-items-center">
+                                    Date fin
+                                     <!--
+                                    <p-columnFilter type="text" field="payS_Nom" display="menu" placeholder="Search by country"></p-columnFilter>
+                                    -->
+                                </div>
+                            </th>
+                            <th>
+                                <div class="flex justify-content-between align-items-center">
+                                    Emplacement
+                                     <!--
+                                    <p-columnFilter type="text" field="payS_Nom" display="menu" placeholder="Search by country"></p-columnFilter>
+                                    -->
+                                </div>
+                            </th>
+                            <th>
+                                <div class="flex justify-content-between align-items-center">
+                                    Parking
+                                     <!--
+                                    <p-columnFilter type="text" field="payS_Nom" display="menu" placeholder="Search by country"></p-columnFilter>
+                                    -->
+                                </div>
+                            </th>
+                            <th>
+                                <div class="flex justify-content-between align-items-center">
+                                    Statut
+                                     <!--
+                                    <p-columnFilter type="text" field="payS_Nom" display="menu" placeholder="Search by country"></p-columnFilter>
+                                    -->
+                                </div>
+                            </th>
+                            <th>
+                                <div class="flex justify-content-between align-items-center" style="width: 12rem;">
+                                    Actions
+                                     <!--
+                                    <p-columnFilter type="text" field="payS_Nom" display="menu" placeholder="Search by country"></p-columnFilter>
+                                    -->
+                                </div>
+                            </th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-reservation>
+                        <tr>
+                            <td>
+                                {{reservation.reS_Id}}
+                            </td>
+                            <td>
+                                {{reservation.reS_DateReservation}}
+                            </td>
+                            <td>
+                                {{reservation.reS_DateDebut}}
+                            </td>
+                            <td>
+                                {{reservation.reS_DateFin}}
+                            </td>
+                            <td>
+                                Etage : {{reservation.plA_Etage}}, place : {{reservation.plA_NumeroPlace}}
+                            </td>
+                            <td>
+                                {{reservation.parK_Nom}} <br>
+                                {{reservation.adrS_NomRue}} {{reservation.adrS_Numero}}, {{reservation.adrS_Ville}}
+                            </td>
+                            <td>
+                                <span [class]="'customer-badge status-' + reservation.statusTag">{{reservation.status}}</span>
+                            </td>
+                            <td>
+                                <button *ngIf="reservation.statusTag === 'unqualified'" title="Cloturer cette réservation" pButton pRipple type="button" icon="pi pi-verified" class="p-button-rounded p-button-success" 
+                             (click)="cloturerReservation(reservation.reS_Id)"></button>
+                                &nbsp;
+                             <button *ngIf="reservation.statusTag === 'unqualified'" title="Supprimer cette réservation" pButton pRipple type="button" icon="pi pi-trash" class="p-button-rounded p-button-danger" 
+                             (click)="supprimerReservation(reservation.reS_Id)"></button>
+                             &nbsp;
+                             <button *ngIf="reservation.statusTag === 'unqualified'" title="Modifier cette réservation" pButton pRipple type="button" icon="pi pi-pencil" class="p-button-rounded p-button-warning" 
+                             (click)="editerReservation(reservation.reS_Id, reservation.parK_Id, reservation.reS_DateDebut, reservation.reS_DateFin)"></button>
+                            </td>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="emptymessage">
+                        <tr>
+                            <td colspan="8">Aucune donnée disponible.</td>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="loadingbody">
+                        <tr>
+                            <td colspan="8">Chargement des pays. En attente ...</td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+            </div>
+    
+        </block-ui>
+		
+	</div>
+</div>
+
+<p-dialog header="Confirmation réservation" [(visible)]="afficherConfirmationReservationDialog" 
+[modal]="true" showEffect="fade" 
+[style]="{width: '50vw'}" [baseZIndex]="10000" [breakpoints]="{'960px': '75vw'}">
+    <form [formGroup]="dateForm">
+        <div class="p-fluid p-formgrid grid">
+            <div class="field col-12 md:col-4">
+                <span class="p-float-label">
+                    <p-calendar formControlName="dateDebut" inputId="calendar" [showIcon]="true" dateFormat="dd/mm/yy" firstDayOfWeek="1" 
+                    (ngModelChange)="onDateDebutChange($event)"></p-calendar>
+                    <label for="calendar">Date de début</label>
+                    <small class="p-error block" *ngIf="dateForm.get('dateDebut')?.invalid && dateForm.get('dateDebut')?.touched">
+                        Date début obligatoire
+                    </small>
+                </span>
+            </div>
+            <div class="field col-12 md:col-4">
+                <span class="p-float-label">
+                    <p-calendar formControlName="dateFin" inputId="calendar" [showIcon]="true" [minDate]="today" dateFormat="dd/mm/yy" firstDayOfWeek="1" ></p-calendar>
+                    <label for="calendar">Date de fin</label>
+                </span>
+            </div>
+            <div class="field col-12 md:col-4">
+                <button pButton label="Afficher les disponibilités" class="p-button-filled mb-2" (click)="afficherDisponibilites();"></button> 
+            </div>
+        </div>
+    </form>
+
+    <form [formGroup]="reservationForm">
+        <div class="p-fluid p-formgrid grid">
+            <div class="field col-12 md:col-6">
+                <div class="card">
+                    <h5>Places</h5>
+                    <p-listbox 
+                        [options]="placeLibreList" 
+                        optionLabel="data" 
+                        [filter]="true" 
+                        [style]="{ width: '100%' }" 
+                        [listStyle]="{'height': '220px'}"
+                        (ngModelChange)="onPlaceLibreChange($event)" 
+                        formControlName="placeLibreList" />
+                    <br>
+                    <input pInputText id="placeLibre" formControlName="placeLibreData" type="text" style="width: 100%" />
+                    <small class="p-error block" *ngIf="reservationForm.get('placeLibreData')?.invalid && reservationForm.get('placeLibreData')?.touched">
+                        Place libre obligatoire
+                    </small>
+                </div>
+            </div>
+        
+            <div class="field col-12 md:col-6">
+                <div class="card">
+                    <h5>Formule de prix</h5>
+                    <p-listbox 
+                        [options]="formulePrixList" 
+                        optionLabel="data" 
+                        [filter]="true" 
+                        [style]="{ width: '100%' }" 
+                        [listStyle]="{'height': '220px'}" 
+                        (ngModelChange)="onFormulePrixChange($event)" 
+                        formControlName="formulePrixList" />
+                    <br>
+                    <input pInputText id="formulePrix" formControlName="formulePrixData"  type="text" style="width: 100%" />
+                    <small class="p-error block" *ngIf="reservationForm.get('formulePrixData')?.invalid && reservationForm.get('formulePrixData')?.touched">
+                        Formule de prix obligatoire
+                    </small>
+                </div>
+            </div>   
+
+            <div class="field col-12 md:col-4">
+            </div>
+            <div class="field col-12 md:col-4">
+                <button pButton class="p-button-secondary" label="Annuler" (click)="afficherConfirmationReservationDialog = false"></button>
+            </div>
+            <div class="field col-12 md:col-4">
+                <button pButton class="p-button-primary" label="Valider la modification" (click)="validerModification()"></button>
+            </div>
+        </div>
+                                
+    </form>
+</p-dialog>

@@ -1,0 +1,73 @@
+<div class="surface-ground flex align-items-center justify-content-center min-h-screen min-w-screen overflow-hidden">
+    <block-ui>
+        <p-toast></p-toast> 
+        <div class="flex flex-column align-items-center justify-content-center">
+            <!-- 
+            <img src="assets/layout/images/{{layoutService.config().colorScheme === 'light' ? 'logo-dark' : 'logo-white'}}.svg" alt="Sakai logo" class="mb-5 w-6rem flex-shrink-0">
+            -->                
+            <div style="border-radius:56px; padding:0.3rem; background: linear-gradient(180deg, var(--primary-color) 10%, rgba(33, 150, 243, 0) 30%);">
+                <div class="w-full surface-card py-8 px-5 sm:px-8" style="border-radius:53px">
+                    <div class="text-center mb-5">
+                        <!--
+                        <img src="assets/demo/images/login/avatar.png" alt="Image" height="50" class="mb-3">
+                        <div class="text-900 text-3xl font-medium mb-3">Welcome, Isabel!</div>
+                        -->
+                        <span class="text-600 font-medium">Créer un compte client</span>
+                    </div>
+    
+                    <div style="width: 600px;">
+                        <form [formGroup]="utilisateurForm" autocomplete="off" action="javascript:void(0)">
+                            <div class="p-fluid p-formgrid grid">
+                                <div class="field col-12 md:col-6">
+                                    <label htmlFor="perS_Nom">Nom</label>
+                                    <input pInputText id="perS_Nom" type="text" formControlName="perS_Nom"/>
+                                    <small class="p-error block" *ngIf="utilisateurForm.get('perS_Nom')?.invalid && utilisateurForm.get('perS_Nom')?.touched">
+                                        Nom est obligatoire
+                                    </small>
+                                </div>
+                                <div class="field col-12 md:col-6">
+                                    <label htmlFor="perS_Prenom">Prénom</label>
+                                    <input pInputText id="perS_Prenom" type="text" formControlName="perS_Prenom" />
+                                    <small class="p-error block" *ngIf="utilisateurForm.get('perS_Prenom')?.invalid && utilisateurForm.get('perS_Prenom')?.touched">
+                                        Prénom est obligatoire
+                                    </small>
+                                </div>
+    
+                                <div class="field col-12 md:col-12">
+                                    <label htmlFor="perS_DateNaissance">Date de naissance</label>
+                                    <p-calendar id="perS_DateNaissance" [showIcon]="true" inputId="icon" formControlName="perS_DateNaissance" dateFormat="dd/mm/yy"></p-calendar>
+                                    <small class="p-error block" *ngIf="utilisateurForm.get('perS_DateNaissance')?.invalid && utilisateurForm.get('perS_DateNaissance')?.touched">
+                                        Date de naissance est obligatoire
+                                    </small>
+                                </div>
+            
+                                <div class="field col-12 md:col-6">
+                                    <label htmlFor="utiL_Email">Email</label>
+                                    <input pInputText id="perS_Email" type="text" formControlName="perS_Email" autocomplete="new-email"/>
+                                    <small class="p-error block" *ngIf="utilisateurForm.get('perS_Email')?.invalid && utilisateurForm.get('perS_Email')?.touched">
+                                        Email est obligatoire
+                                    </small>
+                                </div>
+                                <div class="field col-12 md:col-6">
+                                    <label htmlFor="perS_Password">Mot de passe</label>
+                                    <p-password id="perS_Password" placeholder="Mot de passe" [toggleMask]="true" styleClass="mb-5" inputStyleClass="w-full p-3 md:w-30rem" formControlName="perS_Password" autocomplete="new-password"></p-password>
+                                    <small class="p-error block" *ngIf="utilisateurForm.get('perS_Password')?.invalid && utilisateurForm.get('perS_Password')?.touched">
+                                        Mot de passe est obligatoire
+                                    </small>
+                                </div>
+            
+                                <div class="col-12">
+                                </div>
+                                <div class="field col-12 md:col-12">
+                                    <button pButton label="S'enregistrer" (click)="creer()"></button>
+                                </div>
+                            </div>
+                        </form>
+                        <p>Vous avez déjà un compte ? <a [routerLink]="['/auth/login']" >Se connecter</a></p>
+                        <p><a [routerLink]="['/gestion-reservations/creer-reservation']" >Allez à la page d'accueil </a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </block-ui> 
+</div>

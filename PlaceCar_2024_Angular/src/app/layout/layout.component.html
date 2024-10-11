@@ -1,0 +1,44 @@
+<div class="layout-wrapper" [ngClass]="containerClass">
+    <app-topbar></app-topbar>
+    <div class="layout-sidebar">
+        <app-sidebar></app-sidebar>
+        <div style="position: absolute; bottom: 10px">
+            <button *ngIf="isLoggedIn() == true && getUser()['roles'].length > 1" 
+                (click)="seConnecterEnTemsQue()" pButton pRipple type="button" label="Se connecter en tant que ..." class="p-button-secondary p-button-text">
+            </button>
+        </div>
+    </div>
+    <div class="layout-main-container">
+        <div class="layout-main">
+            <router-outlet></router-outlet><!--Dashboard,gestionEmployé,transaction,...-->
+        </div>
+        <app-footer></app-footer>
+    </div>
+    <app-config></app-config>
+    <div class="layout-mask"></div>
+</div>
+
+<p-dialog header="Sélection du rôle" [modal]="true" [(visible)]="afficherDialogSelectionRole" [style]="{ width: '50rem' }">
+
+    <div class="card p-fluid">
+        <h5>Comment désirez-vous utiliser l'application ?</h5>
+        <div class="field grid">
+            <div class="col-12 md:col-12 lg:col-4 p-0 lg:pr-5 lg:pb-5 mt-4 lg:mt-0" style="margin: 0 auto" *ngFor="let a of roleItems; let iteration = index">
+                <div style="height:160px; padding:2px; border-radius:10px; background: linear-gradient(90deg, rgba(253, 228, 165, 0.2),rgba(187, 199, 205, 0.2)), linear-gradient(180deg, rgba(253, 228, 165, 0.2),rgba(187, 199, 205, 0.2));">
+                    <div class="p-3 surface-card h-full text-center"  [ngClass]="a === getUser()['role'] ? '' : 'selection-card'" style="border-radius:8px; width: 100%;" (click)="onRoleSelected(a)">
+                        <h5 class="mb-2 text-900"><img src="assets/layout/images/{{a}}.png" width="60%"></h5>
+                        <span class="text-600 text-center" >{{ a }}</span>
+                        <!--input type="radio" [disabled]="getUser()['role'] === a"
+                        value="{{ a }}"
+                        [(ngModel)]="selectedRole"
+                        name="selectedRole"-->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--div class="flex justify-content-end gap-2">
+        <p-button label="Valider la sélection" (click)="validerSelectionRole()" />
+    </div-->
+</p-dialog>

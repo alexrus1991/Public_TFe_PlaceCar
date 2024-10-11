@@ -1,0 +1,63 @@
+<div class="grid">
+	<div class="col-12">
+        <block-ui>
+            <p-toast></p-toast> 
+            <p-confirmDialog key="confirmDialog" ></p-confirmDialog>
+            <div class="card">
+                
+                <table class="legende">
+                    <tr>
+                      <th colspan="2">Légende</th>
+                    </tr>
+                    <tr>
+                      <td  class="none"> x </td><td>Disponible</td>
+                    </tr>
+                    <tr>
+                      <td  class="reserved"> x </td><td>Réservation se termine à la date sélectionnée</td>
+                    </tr>
+                    <tr>
+                      <td  class="occupied"> x </td><td>Occupée</td>
+                    </tr>
+                </table>
+                <br><br>
+                <form [formGroup]="placeForm">
+
+                    <div class="p-fluid field grid">
+                        <label htmlFor="dateDebut" class="col-12 mb-2 md:col-2 md:mb-0">Sélection date </label>
+                        <div class="col-12 md:col-6">
+                          <p-calendar formControlName="dateSelection" inputId="calendar" [showIcon]="true" dateFormat="dd/mm/yy" firstDayOfWeek="1" 
+                          (ngModelChange)="onSelectionDateChange($event)"></p-calendar>                  
+                        </div>
+                    </div>
+
+                    <div class="p-fluid field grid">
+                      <label htmlFor="etage" class="col-12 mb-2 md:col-2 md:mb-0">Sélection étage : </label>
+                      <div class="col-12 md:col-6">
+                        <p-dropdown formControlName="etage"
+                        [options]="etageItems"  (onChange)="onSelectionEtageChange($event)"></p-dropdown>
+                      </div>
+                  </div>
+                </form>
+                <br><br>
+               <div *ngIf="parkingsFloorList?.length > 0" class="parking-container-Floor1">
+                  <div class="parking-lot">
+                        <!-- Example of parking spots -->
+                        <div
+                            data-tooltip-location="top"
+                            *ngFor="let p of parkingsFloorList; let i = index"
+                            [ngClass]="{
+                                'parking-spot': true,
+                                'none': p.parkingStatus === 1,                               
+                                'occupied': p.parkingStatus === 0,
+                                'reserved': p.parkingStatus === 2,
+                                'selected': i === selectedSpotFloor
+                            }"
+                            [attr.data-tooltip]="'Etage ' + etageSelectione + ' - Place '+ (i + 1) + ' (' + getStatus(p.parkingStatus)+ ')'"
+                            (click)="selectSpot(i, p.parkingStatus)">
+                        </div>
+                  </div>
+               </div>
+            </div>
+        </block-ui>
+	</div>
+</div>

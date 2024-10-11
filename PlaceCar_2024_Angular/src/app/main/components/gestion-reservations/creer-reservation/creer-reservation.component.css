@@ -1,0 +1,13 @@
+.map-frame {
+    border: 2px solid black;
+    height: 600px;
+  }
+  
+  #map {
+    height: 100%;
+  }
+
+  .address-result:hover {
+    background: #eeeeee;
+    cursor: pointer;
+  }

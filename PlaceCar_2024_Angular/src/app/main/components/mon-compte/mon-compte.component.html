@@ -1,0 +1,81 @@
+<div class="grid">
+    <block-ui>
+        <div class="col-12">   
+            <p-toast></p-toast> 
+            <div class="card">
+                <h5>Mon compte</h5>
+                <form [formGroup]="utilisateurForm" >
+                    <div class="p-fluid p-formgrid grid">
+                        <div class="field col-12 md:col-6">
+                            <label htmlFor="nom">Nom</label>
+                            <input pInputText id="nom" type="text" formControlName="nom"/>
+                        </div>
+                        <div class="field col-12 md:col-6">
+                            <label htmlFor="prenom">Prénom</label>
+                            <input pInputText id="prenom" type="text" formControlName="prenom" />
+                        </div>
+   
+                        <div class="field col-12 md:col-4">
+                            <label htmlFor="dateNaissance">Date de naissance</label>
+                            <p-calendar id="dateNaissance" [showIcon]="true" inputId="icon" formControlName="dateNaissance" 
+                            dateFormat="dd/mm/yy"></p-calendar>
+                        </div>
+                        <div class="field col-12 md:col-4">
+                            <label htmlFor="email">Email</label>
+                            <input pInputText id="email" type="text" formControlName="email" />
+                        </div>
+                        <!-- 
+                        <div class="field col-12 md:col-4">
+                            <label htmlFor="password">Password</label>
+                            <p-password type="text" id="password" [toggleMask]="true" styleClass="mb-5" inputStyleClass="w-full p-3 md:w-100rem" formControlName="password" ></p-password>
+                            <small class="p-error block" *ngIf="utilisateurForm.get('password')?.invalid && utilisateurForm.get('password')?.touched">
+                                Mot de passe est obligatoire
+                            </small>
+                        </div>
+                        -->
+                        <!-- 
+                        <div class="field col-12 md:col-4">
+                            <button pButton label="Modifier" (click)="modifier()"></button>
+                        </div>
+                        -->
+                    </div>
+                </form>
+                <div class="field col-12 md:col-4">
+                    <button pButton label="Modifier votre mot de passe" (click)="modifierPassword()"></button>
+                </div>
+            </div>
+	    </div>
+    </block-ui>
+</div>
+
+<p-dialog header="Modification mot de passe" [modal]="true" [(visible)]="afficherDialogModificationMotDePasse" [style]="{ width: '50rem' }">
+       
+    <form [formGroup]="modificationMotDePasseForm" autocomplete="off" action="javascript:void(0)">
+        <div class="card p-fluid">
+            <div class="field grid">
+                <label htmlFor="newPassword" class="col-12 mb-2 md:col-2 md:mb-0">Nouveau mot de passe</label>
+                <div class="col-12 md:col-10">
+                    <p-password id="newPassword" formControlName="newPassword" [toggleMask]="true" ></p-password>    
+                    <small class="p-error block" *ngIf="modificationMotDePasseForm.get('newPassword')?.invalid && modificationMotDePasseForm.get('newPassword')?.touched">
+                        Ce champ est obligatoire
+                    </small>        
+                </div>
+            </div>
+            <div class="field grid">
+                <label htmlFor="newPassword2" class="col-12 mb-2 md:col-2 md:mb-0">Confirmer le mot de passe</label>
+                <div class="col-12 md:col-10">
+                    <p-password id="newPassword2" formControlName="newPassword2" [toggleMask]="true" ></p-password>       
+                    <small class="p-error block" *ngIf="modificationMotDePasseForm.get('newPassword2')?.invalid && modificationMotDePasseForm.get('newPassword2')?.touched">
+                        Ce champ est obligatoire
+                    </small>       
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <div class="flex justify-content-end gap-2">
+        <p-button label="Annuler" severity="secondary" (click)="annulerModificationMotDePasse()" />
+        <p-button label="Valider" (click)="validerModificationMotDePasse()" />
+    </div>
+</p-dialog>
+

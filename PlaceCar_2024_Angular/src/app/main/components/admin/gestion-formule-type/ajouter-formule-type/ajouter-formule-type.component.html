@@ -1,0 +1,31 @@
+<div class="grid">
+    <block-ui>
+        <div class="col-12">   
+            <p-toast></p-toast> 
+            <div class="card">
+                <h5 *ngIf="idFormuleType == 0 || idFormuleType == null">Ajouter formule type</h5>
+                <h5 *ngIf="idFormuleType > 0">Modifier formule type</h5>
+                <form [formGroup]="formuleTypeForm" >
+                    <div class="p-fluid p-formgrid grid">
+                        <div class="field col-12">
+                            <label htmlFor="forM_Title">Titre</label>
+                            <input pInputText id="forM_Title" type="text" formControlName="forM_Title" />
+                            <small class="p-error block" *ngIf="formuleTypeForm.get('forM_Title')?.invalid && formuleTypeForm.get('forM_Title')?.touched">
+                                Titre est requis
+                            </small>
+                        </div>
+    
+                        <div class="field col-12">
+                            <label htmlFor="forM_Type_Description">Description</label>
+                            <textarea rows="5" cols="30" placeholder="Description" pInputTextarea formControlName="forM_Type_Description"></textarea>
+                        </div>
+                        <div class="field col-12 md:col-4">
+                            <button *ngIf="idFormuleType == 0 || idFormuleType == null" pButton label="Ajouter" (click)="ajouter()"></button>
+                            <button *ngIf="idFormuleType > 0" pButton label="Modifier" (click)="modifier()"></button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+	    </div>
+    </block-ui>
+</div>

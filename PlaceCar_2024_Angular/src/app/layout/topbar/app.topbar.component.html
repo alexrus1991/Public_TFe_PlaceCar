@@ -1,0 +1,105 @@
+<block-ui>
+    <p-toast></p-toast> 
+    <p-confirmDialog key="confirmDialog" ></p-confirmDialog>
+    <div class="layout-topbar">
+        <a class="layout-topbar-logo" routerLink="">
+            <!-- 
+            <img src="assets/layout/images/{{layoutService.config().colorScheme === 'light' ? 'logo-dark' : 'logo-white'}}.svg" alt="logo">
+            -->
+            <img src="assets/layout/images/logo3.jpg" alt="logo">
+            <span>PlaceCar</span>
+        </a>
+    
+        <button *ngIf="isLoggedIn() == true" #menubutton class="p-link layout-menu-button layout-topbar-button" (click)="layoutService.onMenuToggle()">
+            <i class="pi pi-bars"></i>
+        </button>
+    
+        <button #topbarmenubutton class="p-link layout-topbar-menu-button layout-topbar-button" (click)="layoutService.showProfileSidebar()">
+            <i class="pi pi-ellipsis-v"></i>
+        </button>
+    
+        <div #topbarmenu class="layout-topbar-menu" [ngClass]="{'layout-topbar-menu-mobile-active': layoutService.state.profileSidebarVisible}">
+            
+            <!--
+            <button *ngIf="isLoggedIn() == true && getUser()['roles'].includes('Client') <= 0" (click)="creerCompteClient()" class="p-link layout-topbar-button font-bold" style="width: 200px;">
+                <label style="margin-top: 10px; cursor: pointer;">Créer un compte client</label>
+            </button>
+            <button *ngIf="isLoggedIn() == true && getUser()['roles'].includes('Client') > 0 
+                && getUser()['role'].toLowerCase() === 'employee' " (click)="seConnecterEnTemsQue('Client')" class="p-link layout-topbar-button font-bold" style="width: 200px;">
+                <label style="margin-top: 10px; cursor: pointer;">Se connecter en temps client</label>
+            </button>
+            <button *ngIf="isLoggedIn() == true && getUser()['roles'].includes('Employee') > 0 
+                && getUser()['role'].toLowerCase() === 'client' " (click)="seConnecterEnTemsQue('Employee')" class="p-link layout-topbar-button font-bold" style="width: 200px;">
+                <label style="margin-top: 10px; cursor: pointer;">Se connecter en temps employé</label>
+            </button>
+            <button *ngIf="isLoggedIn() == true" class="p-link layout-topbar-button font-bold" style="width: 250px;" (click)="router.navigate(['/mon-compte'])">
+                <i class="pi pi-user"></i>
+                <span>Profile</span>
+                <label style="margin-top: 10px; cursor: pointer; color: blue">&nbsp; Mon compte ({{getUser()['name']}})</label>
+            </button>
+            <button *ngIf="isLoggedIn() == true" (click)="logout()" class="p-link layout-topbar-button font-bold" style="width: 130px;">
+                <label style="margin-top: 10px; cursor: pointer;">Se déconnecter</label>
+            </button>
+            <button *ngIf="isLoggedIn() == false" [routerLink]="['/auth/login']" class="p-link layout-topbar-button font-bold" style="width: 100px;">
+                <label style="margin-top: 10px; cursor: pointer;">Se connecter</label>
+            </button>
+            <button *ngIf="isLoggedIn() == false" [routerLink]="['/auth/register']"  class="p-link layout-topbar-button font-bold" style="width: 130px;">
+                <label style="margin-top: 10px; cursor: pointer;">S'enregistrer</label>
+            </button>
+        -->
+
+            <button *ngIf="isLoggedIn() == true && getUser()['roles'].includes('Client') <= 0" 
+                (click)="creerCompteClient()" pButton pRipple type="button" label="Créer un compte client" class="p-button-secondary p-button-text">
+            </button>
+
+            <!--button *ngIf="isLoggedIn() == true && getUser()['roles'].includes('Client') > 0 
+                && (getUser()['role'].toLowerCase() === 'employee' || getUser()['role'].toLowerCase() === 'admin' || getUser()['role'].toLowerCase() === 'superadmin') " 
+                (click)="seConnecterEnTemsQue('Client')" pButton pRipple type="button" label="Se connecter en tant que client" class="p-button-secondary p-button-text">
+            </button>
+            <button *ngIf="isLoggedIn() == true && getUser()['roles'].includes('Employee') > 0 
+                && getUser()['role'].toLowerCase() === 'client' " 
+                (click)="seConnecterEnTemsQue('Employee')" pButton pRipple type="button" label="Se connecter en tant que employé" class="p-button-secondary p-button-text">
+            </button>
+            <button *ngIf="isLoggedIn() == true && getUser()['roles'].includes('Admin') > 0 
+                && getUser()['role'].toLowerCase() === 'client' " 
+                (click)="seConnecterEnTemsQue('Admin')" pButton pRipple type="button" label="Se connecter en tant que admin" class="p-button-secondary p-button-text">
+            </button>
+            <button *ngIf="isLoggedIn() == true && getUser()['roles'].includes('SuperAdmin') > 0 
+                && (getUser()['role'].toLowerCase() === 'client' || getUser()['role'].toLowerCase() === 'admin') " 
+                (click)="seConnecterEnTemsQue('SuperAdmin')" pButton pRipple type="button" label="Se connecter en tant que super admin" class="p-button-secondary p-button-text">
+            </button-->
+
+            <!--------------------------------------------------------------------------->
+            <button *ngIf="isLoggedIn() == true" 
+                (click)="router.navigate(['/mon-compte'])" pButton pRipple type="button" label="Mon compte ({{getUser()['name']}})" class="p-button-secondary p-button-text">
+            </button>
+            <button *ngIf="isLoggedIn() == true" 
+                (click)="logout()" pButton pRipple type="button" label="Se déconnecter" class="p-button-secondary p-button-text">
+            </button>
+            <button *ngIf="isLoggedIn() == false" 
+                [routerLink]="['/auth/login']" pButton pRipple type="button" label="Se connecter" class="p-button-secondary p-button-text">
+            </button>
+            <button *ngIf="isLoggedIn() == false" [routerLink]="['/auth/register']" pButton pRipple type="button" label="S'enregistrer" 
+            class="p-button-secondary p-button-text">
+            </button>
+
+
+            <!--
+            <button class="p-link layout-topbar-button">
+                <i class="pi pi-calendar"></i>
+                <span>Calendar</span>
+            </button>
+            <button class="p-link layout-topbar-button">
+                <i class="pi pi-user"></i>
+                <span>Profile</span>
+                <label>Mon compte</label>
+            </button>
+            <button class="p-link layout-topbar-button" [routerLink]="'/documentation'">
+                <i class="pi pi-cog"></i>
+                <span>Settings</span>
+            </button>
+            -->
+        </div>
+    </div>
+</block-ui>
+

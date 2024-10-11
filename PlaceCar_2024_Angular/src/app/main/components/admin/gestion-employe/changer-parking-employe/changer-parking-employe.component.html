@@ -1,0 +1,43 @@
+<div class="grid">
+    <block-ui>
+        <div class="col-12">   
+            <p-toast></p-toast> 
+            <div class="card">
+                <h5>Changer de parking pour l'employé <span *ngIf="nomEmploye !== null" style="color: blue">{{nomEmploye}} {{prenomEmploye}}</span></h5>
+                <p>Sélectionnez le nouveau parking</p>
+                <form [formGroup]="utilisateurForm" >
+                    <div class="p-fluid p-formgrid grid">
+
+                        <div class="field col-4">
+                            <label htmlFor="pays">Pays</label>
+                            <p-dropdown id="pays" [options]="paysItems" optionLabel="payS_Nom" formControlName="pays" 
+                            (onChange)="onPaysChange($event)"></p-dropdown>
+                            <small class="p-error block" *ngIf="utilisateurForm.get('pays')?.invalid && utilisateurForm.get('pays')?.touched">
+                                Pays est obligatoire
+                            </small>
+                        </div>
+                        <div class="field col-4">
+                            <label htmlFor="ville">Ville</label>
+                            <p-dropdown id="ville" [options]="villeItems" optionLabel="" formControlName="ville" 
+                            (onChange)="onVilleChange($event)"></p-dropdown>
+                            <small class="p-error block" *ngIf="utilisateurForm.get('ville')?.invalid && utilisateurForm.get('ville')?.touched">
+                                Ville est obligatoire
+                            </small>
+                        </div>
+                        <div class="field col-4">
+                            <label htmlFor="parking">Parking</label>
+                            <p-dropdown id="parking" [options]="parkingItems" optionLabel="parK_Nom" formControlName="parking"></p-dropdown>
+                            <small class="p-error block" *ngIf="utilisateurForm.get('parking')?.invalid && utilisateurForm.get('parking')?.touched">
+                                Parking est obligatoire
+                            </small>
+                        </div>
+
+                        <div class="field col-12 md:col-6">
+                            <button pButton label="Valider le changement" (click)="valider()"></button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+	    </div>
+    </block-ui>
+</div>

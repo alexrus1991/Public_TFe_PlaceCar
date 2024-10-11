@@ -1,0 +1,185 @@
+<block-ui>
+    <p-toast></p-toast> 
+    <div class="grid">
+        <div class="col-12">          
+            <div class="card">
+
+                <h5>Ajout employé</h5>
+                <p-steps [model]="items" [activeIndex]="activeIndex" />
+
+                <!--
+
+                <h5 *ngIf="idUtilisateur == 0">Créer employé <span *ngIf="idParking > 0">dans le parking <span style="color: blue">{{detail}}</span></span></h5>
+                <h5 *ngIf="idUtilisateur > 0">Modifier employé</h5>
+
+                <form [formGroup]="utilisateurForm" >
+                    <div class="p-fluid p-formgrid grid">
+                        <div class="field col-12 md:col-6">
+                            <label htmlFor="nom">Nom</label>
+                            <input pInputText id="nom" type="text" formControlName="nom"/>
+                            <small class="p-error block" *ngIf="utilisateurForm.get('nom')?.invalid && utilisateurForm.get('nom')?.touched">
+                                Nom est obligatoire
+                            </small>
+                        </div>
+                        <div class="field col-12 md:col-6">
+                            <label htmlFor="prenom">Prénom</label>
+                            <input pInputText id="prenom" type="text" formControlName="prenom" />
+                            <small class="p-error block" *ngIf="utilisateurForm.get('prenom')?.invalid && utilisateurForm.get('prenom')?.touched">
+                                Prénom est obligatoire
+                            </small>
+                        </div>
+   
+                        <div class="field col-12 md:col-4">
+                            <label htmlFor="dateNaissance">Date de naissance</label>
+                            <p-calendar id="dateNaissance" [showIcon]="true" inputId="icon" formControlName="dateNaissance" 
+                            dateFormat="dd/mm/yy"></p-calendar>
+                            <small class="p-error block" *ngIf="utilisateurForm.get('dateNaissance')?.invalid && utilisateurForm.get('dateNaissance')?.touched">
+                                Date de naissance est obligatoire
+                            </small>
+                        </div>
+                        <div class="field col-12 md:col-4">
+                            <label htmlFor="email">Email</label>
+                            <input pInputText id="email" type="text" formControlName="email" />
+                            <small class="p-error block" *ngIf="utilisateurForm.get('email')?.invalid && utilisateurForm.get('email')?.touched">
+                                Email est obligatoire
+                            </small>
+                        </div>
+                        <div class="field col-12 md:col-4">
+                            <label htmlFor="password">Password</label>
+                            <p-password type="text" id="password" [toggleMask]="true" styleClass="mb-5" inputStyleClass="w-full p-3 md:w-100rem" formControlName="password" ></p-password>
+                            <small class="p-error block" *ngIf="utilisateurForm.get('password')?.invalid && utilisateurForm.get('password')?.touched">
+                                Password est obligatoire
+                            </small>
+
+                        </div>
+
+                        <div *ngIf="idParking == 0" class="field col-4">
+                            <label htmlFor="pays">Pays</label>
+                            <p-dropdown id="pays" [options]="paysItems" optionLabel="payS_Nom" formControlName="pays" 
+                            (onChange)="onPaysChange($event)"></p-dropdown>
+                            <small class="p-error block" *ngIf="utilisateurForm.get('pays')?.invalid && utilisateurForm.get('pays')?.touched">
+                                Pays est obligatoire
+                            </small>
+                        </div>
+                        <div *ngIf="utilisateurForm.value.pays !== ''" class="field col-4">
+                            <div *ngIf="idParking == 0">
+                                <label htmlFor="ville">Ville</label>
+                                <p-dropdown id="ville" [options]="villeItems" optionLabel="" formControlName="ville" 
+                                (onChange)="onVilleChange($event)"></p-dropdown>
+                                <small class="p-error block" *ngIf="utilisateurForm.get('ville')?.invalid && utilisateurForm.get('ville')?.touched">
+                                    Ville est obligatoire
+                                </small>
+                            </div>
+                        </div>
+                        <div *ngIf="utilisateurForm.value.pays === ''" class="field col-4">
+                        </div>
+                        <div *ngIf="utilisateurForm.value.ville !== ''" class="field col-4">
+                            <div *ngIf="idParking == 0" >
+                                <label htmlFor="parking">Parking</label>
+                                <p-dropdown id="parking" [options]="parkingItems" optionLabel="parK_Nom" formControlName="parking"></p-dropdown>
+                                <small class="p-error block" *ngIf="utilisateurForm.get('parking')?.invalid && utilisateurForm.get('parking')?.touched">
+                                    Parking est obligatoire
+                                </small>
+                            </div>
+                        </div>
+                        <div *ngIf="utilisateurForm.value.ville === '' " class="field col-4">
+                        </div>
+                        <div class="field col-12">
+                        </div>
+                        <div class="field col-12 md:col-4">
+                            <button *ngIf="idUtilisateur == 0" pButton label="Créer" (click)="creer()"></button>
+                            <button *ngIf="idUtilisateur > 0" pButton label="Modifier" (click)="modifier()"></button>
+                        </div>
+                    </div>
+                </form>
+            -->
+            </div>
+
+            <div class="card">
+                <form [formGroup]="utilisateurForm" >
+                    <div class="p-fluid p-formgrid grid">
+                        
+                        <div *ngIf="activeIndex === 0" class="field col-12">
+                            <label htmlFor="pays">Pays</label>
+                            <p-dropdown id="pays" [options]="paysItems" optionLabel="payS_Nom" formControlName="pays" 
+                            (onChange)="onPaysChange($event)"></p-dropdown>
+                            <small class="p-error block" *ngIf="utilisateurForm.get('pays')?.invalid && utilisateurForm.get('pays')?.touched">
+                                Pays est obligatoire
+                            </small>
+                        </div>
+
+                        <div *ngIf="activeIndex === 1" class="field col-12">
+                            <label htmlFor="ville">Ville</label>
+                            <p-dropdown id="ville" [options]="villeItems" optionLabel="" formControlName="ville" 
+                            (onChange)="onVilleChange($event)"></p-dropdown>
+                            <small class="p-error block" *ngIf="utilisateurForm.get('ville')?.invalid && utilisateurForm.get('ville')?.touched">
+                                Ville est obligatoire
+                            </small>
+                        </div>
+
+                        <div *ngIf="activeIndex === 2"  class="field col-12">
+                            <label htmlFor="parking">Parking</label>
+                            <p-dropdown id="parking" [options]="parkingItems" optionLabel="parK_Nom" formControlName="parking"></p-dropdown>
+                            <small class="p-error block" *ngIf="utilisateurForm.get('parking')?.invalid && utilisateurForm.get('parking')?.touched">
+                                Parking est obligatoire
+                            </small>
+                        </div>
+
+                        <div *ngIf="activeIndex === 3" class="field col-12 md:col-6">
+                            <label htmlFor="nom">Nom</label>
+                            <input pInputText id="nom" type="text" formControlName="nom"/>
+                            <small class="p-error block" *ngIf="utilisateurForm.get('nom')?.invalid && utilisateurForm.get('nom')?.touched">
+                                Nom est obligatoire
+                            </small>
+                        </div>
+                        <div *ngIf="activeIndex === 3" class="field col-12 md:col-6">
+                            <label htmlFor="prenom">Prénom</label>
+                            <input pInputText id="prenom" type="text" formControlName="prenom" />
+                            <small class="p-error block" *ngIf="utilisateurForm.get('prenom')?.invalid && utilisateurForm.get('prenom')?.touched">
+                                Prénom est obligatoire
+                            </small>
+                        </div>
+   
+                        <div *ngIf="activeIndex === 3" class="field col-12 md:col-4">
+                            <label htmlFor="dateNaissance">Date de naissance</label>
+                            <p-calendar id="dateNaissance" [showIcon]="true" inputId="icon" formControlName="dateNaissance" 
+                            dateFormat="dd/mm/yy"></p-calendar>
+                            <small class="p-error block" *ngIf="utilisateurForm.get('dateNaissance')?.invalid && utilisateurForm.get('dateNaissance')?.touched">
+                                Date de naissance est obligatoire
+                            </small>
+                        </div>
+                        <div *ngIf="activeIndex === 3" class="field col-12 md:col-4">
+                            <label htmlFor="email">Email</label>
+                            <input pInputText id="email" type="text" formControlName="email" autocomplete="new-email" />
+                            <small class="p-error block" *ngIf="utilisateurForm.get('email')?.invalid && utilisateurForm.get('email')?.touched">
+                                Email est obligatoire
+                            </small>
+                        </div>
+                        <div *ngIf="activeIndex === 3" class="field col-12 md:col-4">
+                            <label htmlFor="password">Password</label>
+                            <p-password type="text" id="password" [toggleMask]="true" styleClass="mb-5" inputStyleClass="w-full p-3 md:w-100rem" formControlName="password" autocomplete="new-password"></p-password>
+                            <small class="p-error block" *ngIf="utilisateurForm.get('password')?.invalid && utilisateurForm.get('password')?.touched">
+                                Password est obligatoire
+                            </small>
+                        </div>
+
+                        <div *ngIf="activeIndex > 0" class="field col-12 md:col-3">
+                            <button pButton label="Précédent" (click)="activeIndex = activeIndex - 1"></button>
+                        </div>
+                        <div *ngIf="activeIndex == 0" class="field col-12 md:col-3">
+                        </div>
+                        <div class="field col-12 md:col-6">
+                        </div>
+                        <div *ngIf="activeIndex >= 0 && activeIndex < 3" class="field col-12 md:col-3">
+                            <button pButton label="Suivant" (click)="suivant()"></button>
+                        </div>
+                        <div *ngIf="activeIndex == 3" class="field col-12 md:col-3">
+                            <button pButton label="Valider" (click)="suivant()"></button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+	    </div>
+    </div>
+</block-ui>
+

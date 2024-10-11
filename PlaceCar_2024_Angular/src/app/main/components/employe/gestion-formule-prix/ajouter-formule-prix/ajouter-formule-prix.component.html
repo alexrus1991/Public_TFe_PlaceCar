@@ -1,0 +1,35 @@
+<div class="grid">
+    <block-ui>
+        <div class="col-12">   
+            <p-toast></p-toast> 
+            <div class="card">
+                <h5 *ngIf="idFormulePrix == 0 || idFormulePrix == null">Ajouter formule prix</h5>
+                <h5 *ngIf="idFormulePrix > 0">Modifier formule prix</h5>
+                <form [formGroup]="formulePrixForm" >
+                    <div class="p-fluid p-formgrid grid">
+
+                        <div class="field col-12 md:col-6">
+                            <label htmlFor="Prix">Prix</label>
+                            <input pInputText id="prix" type="number" formControlName="prix" />
+                            <small class="p-error block" *ngIf="formulePrixForm.get('prix')?.invalid && formulePrixForm.get('prix')?.touched">
+                                Prix est obligatoire
+                            </small>
+                        </div>
+                        <div class="field col-12 md:col-6">
+                            <label htmlFor="formuleType">Formule type</label>
+                            <p-dropdown id="formuleType" [options]="formuleTypeItems" optionLabel="title" formControlName="formuleType"></p-dropdown>
+                            <small class="p-error block" *ngIf="formulePrixForm.get('formuleType')?.invalid && formulePrixForm.get('formuleType')?.touched">
+                                Formule type est obligatoire
+                            </small>
+                        </div>
+
+                        <div class="field col-12 md:col-4">
+                            <button *ngIf="idFormulePrix == 0 || idFormulePrix == null" pButton label="Ajouter" (click)="ajouter()"></button>
+                            <button *ngIf="idFormulePrix > 0" pButton label="Modifier" (click)="modifier()"></button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+	    </div>
+    </block-ui>
+</div>

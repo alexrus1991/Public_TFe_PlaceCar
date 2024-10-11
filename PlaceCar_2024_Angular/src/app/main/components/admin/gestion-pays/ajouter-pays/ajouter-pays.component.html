@@ -1,0 +1,29 @@
+<div class="grid">
+    <block-ui>
+        <div class="col-12">   
+            <p-toast></p-toast> 
+            <div class="card">
+                <h5 *ngIf="idPays == 0 || idPays == null">Ajouter pays</h5>
+                <h5 *ngIf="idPays > 0">Modifier pays</h5>
+                <form [formGroup]="paysForm" >
+                    <div class="p-fluid p-formgrid grid">
+                        <div class="field col-12">
+                            <label htmlFor="nomPays">Pays</label>
+                            <input pInputText id="nomPays" type="text" formControlName="nomPays" />
+                            <small class="p-error block" *ngIf="paysForm.get('nomPays')?.invalid && paysForm.get('nomPays')?.touched">
+                                Pays est requis
+                            </small>
+                        </div>
+    
+                        <div class="field col-12">
+                        </div>
+                        <div class="field col-12 md:col-4">
+                            <button *ngIf="idPays == 0 || idPays == null" pButton label="Ajouter" (click)="ajouter()"></button>
+                            <button *ngIf="idPays > 0" pButton label="Modifier" (click)="modifier()"></button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+	    </div>
+    </block-ui>
+</div>

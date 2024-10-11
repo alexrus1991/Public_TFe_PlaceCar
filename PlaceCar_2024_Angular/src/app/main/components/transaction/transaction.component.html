@@ -1,0 +1,233 @@
+<div class="grid">
+	<div class="col-12">
+        <block-ui>
+            <p-toast></p-toast> 
+            <div class="card">
+                <h5>Transactions</h5>
+                <p-table *ngIf="authService.getUser()['role'].toLowerCase() === 'admin'" #dt1 [value]="transactions" dataKey="id" 
+                    [rows]="transactions.length"  [loading]="loading" [rowHover]="true" styleClass="p-datatable-gridlines" [paginator]="true" 
+                    [globalFilterFields]="['tranS_Id', 'tranS_Date', 'tranS_Somme', 'tranS_Communication']" responsiveLayout="scroll">		
+                    <ng-template pTemplate="caption">
+                        <div class="flex justify-content-between flex-column sm:flex-row">
+                            <!--
+                            <button pButton label="Clear" class="p-button-outlined mb-2" icon="pi pi-filter-slash" (click)="clear(dt1)"></button> 
+                            -->
+
+                            <p-calendar *ngIf="authService.getUser()['role'].toLowerCase() === 'admin'" [(ngModel)]="dateSelectionnee" inputId="calendar" [showIcon]="true" dateFormat="dd/mm/yy" firstDayOfWeek="1" 
+                            (ngModelChange)="onDateDebutChange($event)"></p-calendar>  
+                           
+                            <span class="p-input-icon-left mb-2">
+                                <i class="pi pi-search"></i>
+                                <input pInputText type="text" #filter (input)="onGlobalFilter(dt1, $event)" placeholder="Recherche" class="w-full"/>
+                            </span>
+                        </div>
+                    </ng-template>
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th>
+                                <div class="flex justify-content-between align-items-center">
+                                    Id
+                                    <!--
+                                    <p-columnFilter type="text" field="payS_Id" display="menu" placeholder="Search by name"></p-columnFilter>
+                                    -->
+                                </div>
+                            </th>
+                            <th>
+                                <div class="flex justify-content-between align-items-center">
+                                    Date transaction
+                                     <!--
+                                    <p-columnFilter type="text" field="payS_Nom" display="menu" placeholder="Search by country"></p-columnFilter>
+                                    -->
+                                </div>
+                            </th>
+                            <th>
+                                <div class="flex justify-content-between align-items-center">
+                                    Parking
+                                     <!--
+                                    <p-columnFilter type="text" field="payS_Nom" display="menu" placeholder="Search by country"></p-columnFilter>
+                                    -->
+                                </div>
+                            </th>
+                            <th>
+                                <div class="flex justify-content-between align-items-center">
+                                    Client
+                                     <!--
+                                    <p-columnFilter type="text" field="payS_Nom" display="menu" placeholder="Search by country"></p-columnFilter>
+                                    -->
+                                </div>
+                            </th>
+                            <th>
+                                <div class="flex justify-content-between align-items-center">
+                                    Numéro de compte
+                                     <!--
+                                    <p-columnFilter type="text" field="payS_Nom" display="menu" placeholder="Search by country"></p-columnFilter>
+                                    -->
+                                </div>
+                            </th>
+                            <th>
+                                <div class="flex justify-content-between align-items-center">
+                                    Somme
+                                     <!--
+                                    <p-columnFilter type="text" field="payS_Nom" display="menu" placeholder="Search by country"></p-columnFilter>
+                                    -->
+                                </div>
+                            </th>
+                            <th>
+                                <div class="flex justify-content-between align-items-center">
+                                    Communication
+                                     <!--
+                                    <p-columnFilter type="text" field="payS_Nom" display="menu" placeholder="Search by country"></p-columnFilter>
+                                    -->
+                                </div>
+                            </th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-transaction>
+                        <tr>
+                            <td>
+                                {{transaction.transactionId}}
+                            </td>
+                            <td>
+                                {{transaction.transactionDate}}
+                            </td>
+                            <td>
+                                {{transaction.parkingNom}}
+                            </td>
+                            <td>
+                                {{transaction.clientNom}} {{transaction.clientPrenom}}
+                            </td>
+                            <td>
+                                {{transaction.clientComptetNumero}}
+                            </td>
+                            <td>
+                                {{transaction.transactionSomme}} euros
+                            </td>
+                            <td>
+                                {{transaction.transactionCommunication}}
+                            </td>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="emptymessage">
+                        <tr>
+                            <td colspan="8">Aucune donnée disponible.</td>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="loadingbody">
+                        <tr>
+                            <td colspan="8">Chargement des transactions. En attente ...</td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+
+                <p-table *ngIf="authService.getUser()['role'].toLowerCase() === 'client'" #dt1 [value]="transactions" dataKey="id" [rows]="10" [loading]="loading" [rowHover]="true" styleClass="p-datatable-gridlines" [paginator]="true" 
+                    [globalFilterFields]="['tranS_Id', 'tranS_Date', 'tranS_Somme', 'tranS_Communication']" responsiveLayout="scroll">		
+                    <ng-template pTemplate="caption">
+                        <div class="flex justify-content-between flex-column sm:flex-row">
+                            <span class="p-input-icon-left mb-2">
+                                <i class="pi pi-search"></i>
+                                <input pInputText type="text" #filter (input)="onGlobalFilter(dt1, $event)" placeholder="Recherche" class="w-full"/>
+                            </span>
+                        </div>
+                    </ng-template>
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th>
+                                <div class="flex justify-content-between align-items-center">
+                                    Id
+                                    <!--
+                                    <p-columnFilter type="text" field="payS_Id" display="menu" placeholder="Search by name"></p-columnFilter>
+                                    -->
+                                </div>
+                            </th>
+                            <th>
+                                <div class="flex justify-content-between align-items-center">
+                                    Date transaction
+                                     <!--
+                                    <p-columnFilter type="text" field="payS_Nom" display="menu" placeholder="Search by country"></p-columnFilter>
+                                    -->
+                                </div>
+                            </th>
+                            <th>
+                                <div class="flex justify-content-between align-items-center">
+                                    Bénéficiaire
+                                     <!--
+                                    <p-columnFilter type="text" field="payS_Nom" display="menu" placeholder="Search by country"></p-columnFilter>
+                                    -->
+                                </div>
+                            </th>
+                            <th>
+                                <div class="flex justify-content-between align-items-center">
+                                    Nom compte
+                                     <!--
+                                    <p-columnFilter type="text" field="payS_Nom" display="menu" placeholder="Search by country"></p-columnFilter>
+                                    -->
+                                </div>
+                            </th>
+                            <th>
+                                <div class="flex justify-content-between align-items-center">
+                                    Numéro de compte
+                                     <!--
+                                    <p-columnFilter type="text" field="payS_Nom" display="menu" placeholder="Search by country"></p-columnFilter>
+                                    -->
+                                </div>
+                            </th>
+                            <th>
+                                <div class="flex justify-content-between align-items-center">
+                                    Somme
+                                     <!--
+                                    <p-columnFilter type="text" field="payS_Nom" display="menu" placeholder="Search by country"></p-columnFilter>
+                                    -->
+                                </div>
+                            </th>
+                            <th>
+                                <div class="flex justify-content-between align-items-center">
+                                    Communication
+                                     <!--
+                                    <p-columnFilter type="text" field="payS_Nom" display="menu" placeholder="Search by country"></p-columnFilter>
+                                    -->
+                                </div>
+                            </th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-transaction>
+                        <tr>
+                            <td>
+                                {{transaction.tranS_Id}}
+                            </td>
+                            <td>
+                                {{transaction.tranS_Date}}
+                            </td>
+                            <td>
+                                {{transaction.nom}}
+                            </td>
+                            <td>
+                                {{transaction.cB_Nom}}
+                            </td>
+                            <td>
+                                {{transaction.cB_NumCompte}}
+                            </td>
+                            <td>
+                                {{transaction.tranS_Somme}} euros
+                            </td>
+                            <td>
+                                {{transaction.tranS_Communication}}
+                            </td>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="emptymessage">
+                        <tr>
+                            <td colspan="8">Aucune donnée disponible.</td>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="loadingbody">
+                        <tr>
+                            <td colspan="8">Chargement des transactions. En attente ...</td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+            </div>
+    
+        </block-ui>
+		
+	</div>
+</div>

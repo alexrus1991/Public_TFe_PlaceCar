@@ -1,0 +1,89 @@
+<block-ui>
+    <p-toast></p-toast>
+    <div  class="grid">
+        <div class="card col-12">
+            <h5>Payer facture</h5>
+
+            <form [formGroup]="paiementForm" >
+                <div class="p-fluid p-formgrid grid">
+
+                    <div class="field col-12 md:col-6">
+                        <label htmlFor="compte">Sélectionner le compte de paiement</label>
+                        <p-dropdown id="compte" [options]="compteItems" optionLabel="data" formControlName="compte"></p-dropdown>
+                        <small class="p-error block" *ngIf="paiementForm.get('compte')?.invalid && paiementForm.get('compte')?.touched">
+                            Compte est obligatoire
+                        </small>
+                    </div>
+                    <div *ngIf="compteItems.length === 0" class="field col-12 md:col-2">
+                        <label>&nbsp;</label>
+                        <button pButton label="Créer un compte" (click)="creerCompteBancaire()"></button>
+                    </div>
+
+                    <div class="field col-12 md:col-12">
+                    </div>
+
+                    <div class="field col-12 md:col-6">
+                        <label htmlFor="facture">Facture à payer</label>
+                        <input pInputText id="facture" type="text" formControlName="facture" />
+                        <!--
+                        <p-dropdown id="facture" [options]="factureItems" optionLabel="data" formControlName="facture"></p-dropdown>
+                        <small class="p-error block" *ngIf="paiementForm.get('facture')?.invalid && paiementForm.get('facture')?.touched">
+                            Facture est obligatoire
+                        </small>
+                        -->
+                    </div>
+                    <div class="field col-12 md:col-2">
+                        <label>&nbsp;</label>
+                        <button pButton label="Détail facture" (click)="detailFacture()"></button>
+                    </div>
+
+                    <div class="field col-12 md:col-6">
+                        <label htmlFor="enregistrerPreference">Si cette place vous a plus, cochez la case ci-dessous pour l'enregsitrer dans vos préférences</label>
+						<p-checkbox id="enregistrerPreference" value="1" formControlName="enregistrerPreference"></p-checkbox>
+                    </div>
+                    <div class="field col-12 md:col-6">
+                    </div>
+
+                    <div class="field col-12">
+                        <label htmlFor="motif">Communication</label>
+                        <textarea rows="5" cols="30" placeholder="Communication" pInputTextarea formControlName="communication"></textarea>
+                    </div>
+
+                    <div class="field col-12 md:col-4">
+                        <button pButton label="Payer" (click)="payer()"></button>
+                    </div>
+
+                </div>
+            </form>
+        </div>
+    </div>
+</block-ui>
+
+<p-dialog header="création du compte" [modal]="true" [(visible)]="afficherDialogCreerCompte" [style]="{ width: '50rem' }">
+
+    <div class="card p-fluid">
+        <h5>Vous devez créer un compte pour effectuer le paiement</h5>
+        <div class="field grid">
+            <label htmlFor="compteBancaire" class="col-12 mb-2 md:col-2 md:mb-0">Nom du compte</label>
+            <div class="col-12 md:col-10">
+                <input pInputText id="compteBancaire" type="text" [(ngModel)]="compteBancaire" />
+            </div>
+        </div>
+    </div>
+
+    <div class="flex justify-content-end gap-2">
+        <p-button label="Annuler" severity="secondary" (click)="annulerCreationCompte()" />
+        <p-button label="Créer le compte" (click)="doCreerCompteBancaire()" />
+    </div>
+</p-dialog>
+
+<p-dialog header="Détail facture" [(visible)]="afficherDialogDetailFacture" [modal]="true" showEffect="fade" [style]="{width: '30vw'}" [breakpoints]="{'960px': '75vw'}">
+    <p *ngIf="facture !== null && facture !== undefined" class="line-height-3 m-0">
+      Id facture : {{facture['facT_Id']}} <br>
+      Date réservation : {{facture['reS_DateReservation']}} <br>
+      Date début : {{facture['reS_DateDebut']}} <br>
+      Date fin : {{facture['reS_DateFin']}} <br>
+      Somme : {{facture['facT_Somme']}} euros<br>
+    </p>
+</p-dialog>
+

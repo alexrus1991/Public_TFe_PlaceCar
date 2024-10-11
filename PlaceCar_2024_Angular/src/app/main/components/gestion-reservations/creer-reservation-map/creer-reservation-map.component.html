@@ -1,0 +1,216 @@
+
+<block-ui>
+    <p-toast></p-toast> 
+    <div class="col-12">
+        <div class="card">
+            <div class="grid">
+                <div class="col-3 flex align-items-start justify-content-center">
+                    <div class="p-fluid p-formgrid grid ">
+                        <div class="field col-12 md:col-12">                 
+                            <span class="p-float-label p-input-icon-left">
+                                <i class="pi pi-search"></i>
+                                <input type="text" id="address" [(ngModel)]="address" pInputText [style]="{'width':'100%'}" (keyup)="onAddressChange($event)" />
+                                <label for="address">{{rechercheAdresse}}</label>
+                            </span>
+                        </div>
+                        <div class="align-center address-col">
+                            <div class="card address-result" 
+                            *ngFor="let p of filteredParkings; let i = index"  [ngClass]="{'selected-parking': p.selected === true}" 
+                            (click)="onParkingClick(p);" >
+                                <h5>{{p.parK_Nom}}</h5>
+                                <p>{{p.adrS_NomRue}} {{p.adrS_Numero}}, {{p.adrS_Ville}} - {{p.payS_Nom}}</p>
+                            </div>
+                            <div class="card address-result" *ngIf="filteredParkings.length > 0" 
+                            (click)="afficherTousLesParkings(pays)">
+                                <h5>Afficher tous les parking de <strong>{{pays.payS_Nom}}</strong></h5>
+                            </div>
+                            <div (click)="onParkingClick(null);" *ngIf="filteredParkings.length === 0">
+                                <p>Vous pouvez chercher un parking en entrant le <strong>nom de la ville</strong> ou <strong>du parking</strong>.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-1">
+                    <p-divider layout="vertical">
+
+                       
+
+                    </p-divider>
+                </div>
+                <div class="col-8 align-items-start justify-content-center">
+    
+                    <form [formGroup]="dateForm">
+                        <div class="p-fluid p-formgrid grid">
+                            <div class="field col-12 md:col-4">
+                                <span class="p-float-label">
+                                    <p-calendar formControlName="dateDebut" inputId="calendar" 
+                                    [showIcon]="true" 
+                                    [minDate]="today" dateFormat="dd/mm/yy" firstDayOfWeek="1" 
+                                    (ngModelChange)="onDateDebutChange($event)"></p-calendar>
+                                    <label for="calendar">Date de début</label>
+                                    <small class="p-error block" *ngIf="dateForm.get('dateDebut')?.invalid && dateForm.get('dateDebut')?.touched">
+                                        Date début obligatoire
+                                    </small>
+
+                                </span>
+                                <br>
+                                <p-dropdown formControlName="heureDebut"
+                                    [options]="heureItems"></p-dropdown>
+                            </div>
+                            <div class="field col-12 md:col-4">
+                                <span class="p-float-label">
+                                    <p-calendar formControlName="dateFin" inputId="calendar" 
+                                    [showIcon]="true" 
+                                    [minDate]="today" dateFormat="dd/mm/yy" firstDayOfWeek="1" ></p-calendar>
+                                    <label for="calendar">Date de fin</label>
+                                </span>
+                                <br>
+                                <p-dropdown formControlName="heureFin"
+                                [options]="heureItems"></p-dropdown>
+                            </div>
+                            <div class="field col-12 md:col-4">
+                                <button pButton label="Valider" class="p-button-filled mb-2" (click)="validerDisponibilites();"></button> 
+                            </div>
+                        </div>
+                    </form>
+                    
+                    <div class="map-frame">
+                        <div #mapContainer id="map"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</block-ui>
+
+<p-dialog header="Confirmation réservation" [(visible)]="afficherConfirmationReservationDialog" 
+[modal]="true" showEffect="fade" 
+[style]="{width: '75vw'}" [baseZIndex]="10000">
+   
+    <div class="p-fluid">
+        <div class="field grid">
+
+            <ng-container *ngIf="activeIndex === 0">
+                <div class="col-12 md:col-12 lg:col-4 p-0 lg:pr-5 lg:pb-5 mt-4 lg:mt-0" *ngFor="let formuleOption of formuleOptionList; let iteration = index">
+                    <div style="padding:1px; border-radius:10px; background: linear-gradient(90deg, rgba(253, 228, 165, 0.2),rgba(187, 199, 205, 0.2)), linear-gradient(180deg, rgba(253, 228, 165, 0.2),rgba(187, 199, 205, 0.2));">
+                        <div class="p-3 surface-card h-full" [ngClass]="formuleOption['index'] === selectedFormuleDePrix?.index ? 'selection-card-active' : 'selection-card'" style="border-radius:8px;" (click)="onFormuleDePrixSelected(formuleOption)">
+                            <h5 class="mb-2 text-center font-weight-bold">
+                            {{formuleOption.description}}
+                            </h5>
+                            <hr>
+                            <span class="text-600" [innerHTML]="formuleOption.priceDetails.toHTML()"></span>
+                            <br><br>
+                            <span class="text-600">Total: {{ formuleOption.total }}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="align-center text-center" style="color: red; width: 100%; margin: 0 auto; font-size: large;" *ngIf="formuleOptionList.length == 0">
+                    Aucune formule de prix n'est disponible pour la durée choisie. 
+                    <hr> 
+                    Les formules disponibles pour ce parking sont : <br><br>
+                    <ul style="width:25%; margin: 0 auto; padding: 0; list-style-type: none;">
+                        <li *ngFor="let formuleOption of LibelleFormules; let iteration = index" style="margin-left: 2em; position: relative;">
+                            <!-- Puce personnalisée à gauche -->
+                            <span style="position: absolute; left: -2em; top: 0; font-weight: bold;">•</span>
+                            <h5 class="mb-2 text-center font-weight-bold" style="display: inline;">
+                                {{formuleOption.forM_Title}}
+                            </h5>
+                        </li>
+                    </ul>
+                    <hr>
+                    Veuillez choisir un autre parking du Groupe PlaceCar
+                </div>
+                <!--<div class="align-center text-center" style="color: red; width: 100%; margin: 0 auto; font-size: large;" *ngIf="formuleOptionList.length == 0">Aucune formule de prix n'est disponible pour la durée choisies. 
+                    <hr> Les formules disponibles pour ce parking sont : 
+                    <ul style="width:25%;" class="align-center" style="margin: 0 auto;">
+                        <li  *ngFor="let formuleOption of LibelleFormules; let iteration = index" style="list-style-type: none;">
+                       
+                                <h5 class="mb-2 text-center font-weight-bold">
+                                {{formuleOption.forM_Title}}
+                                </h5>
+                             
+                        </li>
+                    </ul>
+                       
+                     
+                    <hr>Veuillez choisir un autre parking du Groupe PlaceCar
+                </div>--> <!-- <div *ngFor="let formule in LibelleFormules;">{{formule.libelle}}</div> -->
+            </ng-container>
+
+            <ng-container *ngIf="activeIndex === 1">
+                <div class="field col-12 md:col-12">
+                    <div style="padding:1px; border-radius:10px;">
+                        <form [formGroup]="placeLibreForm">
+                            <label>Sélection étage : </label>
+                            <p-dropdown formControlName="etage"
+                            [options]="etageItems"  (onChange)="onSelectionEtageChange($event)"></p-dropdown>
+                        </form>
+
+                        <div *ngIf="etageSelectione > 0" class="parking-container-Floor1">
+                            <div class="parking-lot">
+                                    <!-- Example of parking spots -->
+                                    <div
+                                    data-tooltip-location="top"
+                                    *ngFor="let p of parkingsFloorList; let i = index"
+                                    [ngClass]="{
+                                        'parking-spot': true,
+                                        'occupied': p.parkingStatus === 0,
+                                        'none': p.parkingStatus === 1,
+                                        'reserved': p.parkingStatus === 2,
+                                        'selected': i === selectedSpotFloor
+                                    }"
+                                    [attr.data-tooltip]="'Etage ' + etageSelectione + ' - Place '+ (i + 1) + ' (' + getStatus(p.parkingStatus)+ ')'"
+                                    (click)="selectSpot(i, p.parkingStatus)">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </ng-container>
+
+            <div style="width: 100%;"></div>
+            <div *ngIf="activeIndex > 0" class="field col-12 md:col-3">
+                <button pButton label="Précédent" (click)="activeIndex = activeIndex - 1"></button>
+            </div>
+            <div *ngIf="activeIndex == 0" class="field col-12 md:col-3">
+            </div>
+            <div class="field col-12 md:col-6">
+                &nbsp;
+            </div>
+            <div *ngIf="activeIndex >= 0 && activeIndex < 1 && formuleOptionList.length > 0" class="field col-12 md:col-3">
+                <button pButton label="Suivant" (click)="suivant()"></button>
+            </div>
+            <div *ngIf="activeIndex == 1" class="field col-12 md:col-3">
+                <button pButton label="Effectuer la réservation" (click)="reserver()"></button>
+            </div>
+        </div>
+    </div>
+
+</p-dialog>
+
+<p-dialog header="Connexion" [closable]="false" [modal]="true" [(visible)]="afficherDialogConnexion" [style]="{ width: '50rem' }">
+       
+    <form [formGroup]="utilisateurForm" autocomplete="false" action="javascript:void(0)">
+        <div class="card p-fluid">
+            <h5>Vous devez vous connecter pour effectuer une réservation</h5>
+            <div class="field grid">
+                <label htmlFor="login" class="col-12 mb-2 md:col-2 md:mb-0">Nom d'utilisateur</label>
+                <div class="col-12 md:col-10">
+                    <input pInputText id="login" type="text" formControlName="login" autocomplete="new-email" />
+                </div>
+            </div>
+            <div class="field grid">
+                <label htmlFor="password" class="col-12 mb-2 md:col-2 md:mb-0">Mot de passe</label>
+                <div class="col-12 md:col-10">
+                    <p-password id="password" formControlName="password"  placeholder="Password" [toggleMask]="true" autocomplete="new-password"></p-password>            
+                </div>
+            </div>
+        </div>
+    </form>
+    <p>Vous n'avez pas de compte ? <a [routerLink]="['/auth/register']" >S'enregister</a></p>
+    <div class="flex justify-content-end gap-2">
+        <p-button label="Annuler" severity="secondary" (click)="annulerConnexion()" />
+        <p-button label="Se connecter" (click)="seConnecter()" />
+    </div>
+</p-dialog>
+

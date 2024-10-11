@@ -1,0 +1,74 @@
+<div class="grid">
+    <block-ui>
+        <div class="col-12">   
+            <p-toast></p-toast> 
+            <div class="card">
+                <h5 *ngIf="idParking == 0 || idParking == null">Ajouter parking</h5>
+                <h5 *ngIf="idParking > 0">Modifier parking</h5>
+                <form [formGroup]="parkingForm" >
+                    <div class="p-fluid p-formgrid grid">
+                        
+                        <div class="field col-6">
+                            <label htmlFor="parK_Nom">Nom</label>
+                            <input pInputText id="parK_Nom" type="text" formControlName="parK_Nom" />
+                            <small class="p-error block" *ngIf="parkingForm.get('parK_Nom')?.invalid && parkingForm.get('parK_Nom')?.touched">
+                                Nom est obligatoire
+                            </small>
+                        </div>
+                        <div class="field col-3">
+                            <label htmlFor="parK_NbEtages">Nombre étages</label>
+                            <input pInputText id="parK_NbEtages" type="number" formControlName="parK_NbEtages" />
+                            <small class="p-error block" *ngIf="parkingForm.get('parK_NbEtages')?.invalid && parkingForm.get('parK_NbEtages')?.touched">
+                                Nombre étages est obligatoire
+                            </small>
+                        </div>
+                        <div class="field col-3">
+                            <label htmlFor="parK_NbPlaces">Nombre de places</label>
+                            <input pInputText id="parK_NbPlaces" type="number" formControlName="parK_NbPlaces" />
+                            <small class="p-error block" *ngIf="parkingForm.get('parK_NbPlaces')?.invalid && parkingForm.get('parK_NbPlaces')?.touched">
+                                Nombre de places est obligatoire
+                            </small>
+                        </div>
+
+                        <div class="field col-9">
+                            <label htmlFor="adrS_NomRue">Nom rue</label>
+                            <input pInputText id="adrS_NomRue" type="text" formControlName="adrS_NomRue" />
+                            <small class="p-error block" *ngIf="parkingForm.get('adrS_NomRue')?.invalid && parkingForm.get('adrS_NomRue')?.touched">
+                                Nom rue est obligatoire
+                            </small>
+                        </div>
+                        <div class="field col-3">
+                            <label htmlFor="adrS_Numero">Numéro</label>
+                            <input pInputText id="adrS_Numero" type="number" formControlName="adrS_Numero" />
+                            <small class="p-error block" *ngIf="parkingForm.get('adrS_Numero')?.invalid && parkingForm.get('adrS_Numero')?.touched">
+                                Numéro est obligatoire
+                            </small>
+                        </div> 
+
+                        <div class="field col-6">
+                            <label htmlFor="adrS_Ville">Ville</label>
+                            <input pInputText id="adrS_Ville" type="text" formControlName="adrS_Ville" />
+                            <small class="p-error block" *ngIf="parkingForm.get('adrS_Ville')?.invalid && parkingForm.get('adrS_Ville')?.touched">
+                                Ville est obligatoire
+                            </small>
+                        </div>
+                        <div class="field col-12 md:col-6">
+                            <label htmlFor="pays">Pays</label>
+                            <p-dropdown id="pays" [options]="paysItems" optionLabel="payS_Nom" formControlName="pays"></p-dropdown>
+                            <small class="p-error block" *ngIf="parkingForm.get('pays')?.invalid && parkingForm.get('pays')?.touched">
+                                Pays obligatoire
+                            </small>
+                        </div>
+
+                        <div class="field col-12">
+                        </div>
+                        <div class="field col-12 md:col-4">
+                            <button *ngIf="idParking == 0 || idParking == null" pButton label="Ajouter" (click)="ajouter()"></button>
+                            <button *ngIf="idParking > 0" pButton label="Modifier" (click)="modifier()"></button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+	    </div>
+    </block-ui>
+</div>

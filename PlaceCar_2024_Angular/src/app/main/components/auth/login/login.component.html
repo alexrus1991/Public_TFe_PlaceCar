@@ -1,0 +1,70 @@
+<div class="surface-ground flex align-items-center justify-content-center min-h-screen min-w-screen overflow-hidden">
+    <div class="flex flex-column align-items-center justify-content-center">
+        <block-ui>
+            <p-toast></p-toast>
+            <p-confirmDialog key="confirmDialog" ></p-confirmDialog>
+            <div style="border-radius:56px; padding:0.3rem; background: linear-gradient(180deg, var(--primary-color) 10%, rgba(33, 150, 243, 0) 30%);">
+                <div class="w-full surface-card py-8 px-5 sm:px-8" style="border-radius:53px">
+                    <div class="text-center mb-5">
+
+                        <img src="assets/layout/images/logo3.jpg" alt="Image" height="50" class="mb-3">
+                        <div class="text-900 text-3xl font-medium mb-3">Connectez-vous pour continuer</div>
+
+                        <span class="text-600 font-medium"></span>
+                    </div>
+                    <form [formGroup]="utilisateurForm" autocomplete="off" action="javascript:void(0)">
+                        <div>
+
+                            <label for="login" class="block text-900 text-xl font-medium mb-2">Login</label>
+                            <input id="login" type="text" placeholder="Login" pInputText class="w-full md:w-30rem mb-5" style="padding:1rem"
+                            formControlName="login" autocomplete="new-email">
+
+                            <label for="password" class="block text-900 font-medium text-xl mb-2">Password</label>
+                            <p-password id="password" placeholder="Password" [toggleMask]="true" styleClass="mb-5" inputStyleClass="w-full p-3 md:w-30rem"
+                            formControlName="password" autocomplete="new-password"></p-password>
+
+                            <div class="flex align-items-center justify-content-between mb-5 gap-5">
+                                <div class="flex align-items-center">
+                                    <p-checkbox id="rememberme" [binary]="true" styleClass="mr-2"
+                                    formControlName="rememberMe"></p-checkbox>
+                                    <label for="rememberme">Remember me</label>
+                                </div>
+                            </div>
+                            <button pButton pRipple label="Se connecter" class="w-full p-3 text-xl" (click)="doLogin()"></button>
+                            <br><br>
+                            <p>Vous n'avez pas de compte ? <a [routerLink]="['/auth/register']" >S'enregister</a></p>
+                            <p><a [routerLink]="['/gestion-reservations/creer-reservation']" >Allez à la page d'accueil </a></p>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </block-ui>
+
+    </div>
+</div>
+
+<p-dialog header="Sélection du rôle" [modal]="true" [(visible)]="afficherDialogSelectionRole" [style]="{ width: '50rem' }">
+
+    <div class="card p-fluid">
+        <h5>Comment désirez-vous utiliser l'application aujourd'hui ?</h5>
+        <div class="field grid">
+            <div class="col-12 md:col-12 lg:col-4 p-0 lg:pr-5 lg:pb-5 mt-4 lg:mt-0" style="margin: 0 auto" *ngFor="let a of roleItems; let iteration = index">
+                <div style="height:160px; padding:2px; border-radius:10px; background: linear-gradient(90deg, rgba(253, 228, 165, 0.2),rgba(187, 199, 205, 0.2)), linear-gradient(180deg, rgba(253, 228, 165, 0.2),rgba(187, 199, 205, 0.2));">
+                    <div class="p-3 surface-card h-full selection-card text-center" style="border-radius:8px; width: 100%;" (click)="onRoleSelected(a)">
+                        <h5 class="mb-2 text-900"><img src="assets/layout/images/{{a}}.png" width="60%"></h5>
+                        <span class="text-600">{{ a }}</span>
+                        <!--input type="radio"
+                        value="{{ a }}"
+                        [(ngModel)]="selectedRole"
+                        name="selectedRole"-->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--div class="flex justify-content-end gap-2">
+        <p-button label="Se connecter" (click)="validerSelectionRole()" />
+    </div-->
+</p-dialog>
